@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <title>Button Layout with Audio</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            margin: 10px;
+        }
+        .column button {
+            display: block;
+            margin: 5px 0;
+        }
+        .row button {
+            display: inline-block;
+            margin: 0 2px; /* Reduced space between buttons */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="column row">
+            <button>关闭</button>
+            <button>示廓灯</button>
+            <button>近光灯</button>
+        </div>
+        <div class="column">
+            <button>远光灯</button>
+            <button>复位</button>
+            <button>远近交替</button>
+        </div>
+        <div class="column">
+            <button>危险报警闪光灯</button>
+        </div>
+    </div>
+    <div class="container">
+        <button id="start">スタート</button>
+        <button id="stop">ストップ</button>
+    </div>
+</body>
+</html>

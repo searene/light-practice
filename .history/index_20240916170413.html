@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Layout with Audio</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            margin: 10px;
+        }
+        .column button {
+            display: block;
+            margin: 5px 0;
+        }
+        .row button {
+            display: inline-block;
+            margin: 0 2px; /* Reduced space between buttons */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="column row">
+            <button>关闭</button>
+            <button>示廓灯</button>
+            <button>近光灯</button>
+        </div>
+        <div class="column">
+            <button>远光灯</button>
+            <button>复位</button>
+            <button>远近交替</button>
+        </div>
+        <div class="column">
+            <button>危险报警闪光灯</button>
+        </div>
+    </div>
+    <div class="container">
+        <button id="start">スタート</button>
+        <button id="stop">ストップ</button>
+    </div>
+
+    <script>
+        const sounds = [
+'夜间通过坡路.mp3',
+-rw-r--r--@ 1 joeygreen  staff  11376 Sep 16 16:06 夜间通过急弯.mp3
+-rw-r--r--@ 1 joeygreen  staff  12096 Sep 16 16:07 夜间通过拱桥.mp3
+-rw-r--r--@ 1 joeygreen  staff  11952 Sep 16 16:09 路边临时停车.mp3
+-rw-r--r--@ 1 joeygreen  staff  14256 Sep 16 16:09 夜间与机动车会车.mp3
+-rw-r--r--@ 1 joeygreen  staff  14400 Sep 16 16:10 夜间直行通过路口.mp3
+-rw-r--r--@ 1 joeygreen  staff  14256 Sep 16 16:08 夜间超越前方车辆.mp3
+-rw-r--r--@ 1 joeygreen  staff  13680 Sep 16 16:08 夜间通过人行横道.mp3
+-rw-r--r--@ 1 joeygreen  staff  19440 Sep 16 16:07 夜间同方向近距离跟车行驶.mp3
+-rw-r--r--@ 1 joeygreen  staff  17424 Sep 16 16:09 夜间在有路灯的道路上行驶.mp3
+-rw-r--r--@ 1 joeygreen  staff  18288 Sep 16 16:08 夜间在没有路灯的条件下行驶.mp3
+-rw-r--r--@ 1 joeygreen  staff  19008 Sep 16 16:07 夜间在照明不良的条件下行驶.mp3
+-rw-r--r--@ 1 joeygreen  staff  19152 Sep 16 16:09 夜间在照明良好的道路上行驶.mp3
+-rw-r--r--@ 1 joeygreen  staff  21744 Sep 16 16:09 夜间通过没有交通信号灯控制的路口.mp3
+-rw-r--r--@ 1 joeygreen  staff  27648 Sep 16 16:07 夜间在道路上发生故障妨碍交通又难以移动.mp3
+        ];
+        let audio = new Audio();
+        let interval;
+
+        document.getElementById('start').addEventListener('click', () => {
+            playRandomSound();
+            interval = setInterval(playRandomSound, 5000);
+        });
+
+        document.getElementById('stop').addEventListener('click', () => {
+            clearInterval(interval);
+            audio.pause();
+        });
+
+        function playRandomSound() {
+            const randomIndex = Math.floor(Math.random() * sounds.length);
+            audio.src = `sounds/${sounds[randomIndex]}`;
+            audio.play();
+        }
+    </script>
+</body>
+</html>

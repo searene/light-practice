@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+.column {
+    margin: 10px;
+}
+.column button {
+    display: block;
+    margin: 5px 0;
+}
+.row button {
+    display: inline-block;
+    margin: 0 2px; /* Reduced space between buttons */
+}
+.selected {
+    background-color: #f0f0f0;
+    
+}

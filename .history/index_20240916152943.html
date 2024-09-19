@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Layout</title>
+    <style>
+        .container {
+            display: flex;
+        }
+        .column {
+            margin: 10px;
+        }
+        .column button {
+            display: block;
+            margin: 20px 0;
+        }
+        .row button {
+            display: inline-block;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="column row">
+            <button>关闭</button>
+            <button>示廓灯</button>
+            <button>近光灯</button>
+        </div>
+        <div class="column">
+            <button>远光灯</button>
+            <button>复位</button>
+            <button>远近交替</button>
+        </div>
+        <div class="column">
+            <button>危险报警闪光灯</button>
+        </div>
+    </div>
+</body>
+</html>
