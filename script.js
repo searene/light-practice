@@ -98,7 +98,7 @@ document.getElementById('stop').addEventListener('click', () => {
 
 function playSound() {
     const randomIndex = Math.floor(Math.random() * sounds.length);
-    sound.src = `/sounds/${sounds[randomIndex][0]}`;
+    sound.src = `sounds/${sounds[randomIndex][0]}`;
     sound.play();
     sound.onended = () => {
         interval = setTimeout(playSound, 5000);
