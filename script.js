@@ -1,77 +1,83 @@
 const lightSwitch = {
-    closed: '閉じる',
-    positionLight: 'ポジションラーと',
-    lowBeam: 'ロービーム',
+    closed: 'closed',
+    positionLight: 'positionLight',
+    lowBeam: 'lowBeam',
 }
 const headlightLever = {
-    highBeam: 'ハイビーム',
-    lowBeam: 'ロービーム',
-    highLowBeamToggle: 'ハイビームとロービームの切り替え',
+    highBeam: 'highBeam',
+    lowBeam: 'lowBeam',
+    highLowBeamToggle: 'highLowBeamToggle',
 }
 const hazardLight = {
-    on: 'オフ',
-    off: 'オン',
+    on: 'on',
+    off: 'off',
 }
-const 正しい状態 = {
-    ロービーム: [lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.on],
-    ハイビーム: [lightSwitch.lowBeam, headlightLever.highBeam, hazardLight.on],
-    ハイビームとロービームの切り替え: [lightSwitch.lowBeam, headlightLever.highLowBeamToggle, hazardLight.on],
-    ハザードランプ: [lightSwitch.positionLight, headlightLever.lowBeam, hazardLight.off],
+const correctStatus = {
+    lowBeam: [lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.on],
+    highBeam: [lightSwitch.lowBeam, headlightLever.highBeam, hazardLight.on],
+    highLowBeamToggle: [lightSwitch.lowBeam, headlightLever.highLowBeamToggle, hazardLight.on],
+    hazardLight: [lightSwitch.positionLight, headlightLever.lowBeam, hazardLight.off],
 }
 const selectedStatus = [lightSwitch.closed, headlightLever.lowBeam, hazardLight.on]
 const sounds = [
-    ['夜间通过坡路.mp3', 正しい状態.ハイビームとロービームの切り替え],
-    ['夜间通过急弯.mp3', 正しい状態.ハイビームとロービームの切り替え],
-    ['夜间通过拱桥.mp3', 正しい状態.ハイビームとロービームの切り替え],
-    ['路边临时停车.mp3', 正しい状態.ハザードランプ],
-    ['夜间与机动车会车.mp3', 正しい状態.ロービーム],
-    ['夜间直行通过路口.mp3', 正しい状態.ロービーム],
-    ['夜间超越前方车辆.mp3', 正しい状態.ハイビームとロービームの切り替え],
-    ['夜间通过人行横道.mp3', 正しい状態.ハイビームとロービームの切り替え],
-    ['夜间同方向近距离跟车行驶.mp3', 正しい状態.ロービーム],
-    ['夜间在有路灯的道路上行驶.mp3', 正しい状態.ロービーム],
-    ['夜间在没有路灯的条件下行驶.mp3', 正しい状態.ハイビーム],
-    ['夜间在照明不良的条件下行驶.mp3', 正しい状態.ハイビーム],
-    ['夜间在照明良好的道路上行驶.mp3', 正しい状態.ロービーム],
-    ['夜间通过没有交通信号灯控制的路口.mp3', 正しい状態.ハイビームとロービームの切り替え],
-    ['夜间在道路上发生故障妨碍交通又难以移动.mp3', 正しい状態.ハザードランプ],
+    ['夜间通过坡路.mp3', correctStatus.highLowBeamToggle],
+    ['夜间通过急弯.mp3', correctStatus.highLowBeamToggle],
+    ['夜间通过拱桥.mp3', correctStatus.highLowBeamToggle],
+    ['路边临时停车.mp3', correctStatus.hazardLight],
+    ['夜间与机动车会车.mp3', correctStatus.lowBeam],
+    ['夜间直行通过路口.mp3', correctStatus.lowBeam],
+    ['夜间超越前方车辆.mp3', correctStatus.highLowBeamToggle],
+    ['夜间通过人行横道.mp3', correctStatus.highLowBeamToggle],
+    ['夜间同方向近距离跟车行驶.mp3', correctStatus.lowBeam],
+    ['夜间在有路灯的道路上行驶.mp3', correctStatus.lowBeam],
+    ['夜间在没有路灯的条件下行驶.mp3', correctStatus.highBeam],
+    ['夜间在照明不良的条件下行驶.mp3', correctStatus.highBeam],
+    ['夜间在照明良好的道路上行驶.mp3', correctStatus.lowBeam],
+    ['夜间通过没有交通信号灯控制的路口.mp3', correctStatus.highLowBeamToggle],
+    ['夜间在道路上发生故障妨碍交通又难以移动.mp3', correctStatus.hazardLight],
 ];
 let sound = new Audio();
 let interval;
 
-document.getElementById("閉じる").addEventListener('click', () => {
+document.getElementById("closed").addEventListener('click', () => {
     selectedStatus[0] = lightSwitch.closed;
     // Change the button's style to mark it as selected
-    document.getElementById("閉じる").classList.add('selected');
-    document.getElementById('ポジションラーと').classList.remove('selected');
-    document.getElementById('ロービーム').classList.remove('selected');
+    document.getElementById("closed").classList.add('selected');
+    document.getElementById('positionLight').classList.remove('selected');
+    document.getElementById('lowBeam').classList.remove('selected');
+    selectedStatus[0] = 'closed';
 });
-document.getElementById("ポジションラーと").addEventListener('click', () => {
+document.getElementById("positionLight").addEventListener('click', () => {
     selectedStatus[0] = lightSwitch.positionLight;
-    document.getElementById("閉じる").classList.remove('selected');
-    document.getElementById('ポジションラーと').classList.add('selected');
-    document.getElementById('ロービーム').classList.remove('selected');
+    document.getElementById("closed").classList.remove('selected');
+    document.getElementById('positionLight').classList.add('selected');
+    document.getElementById('lowBeam').classList.remove('selected');
+    selectedStatus[0] = 'positionLight';
 });
-document.getElementById("ロービーム").addEventListener('click', () => {
+document.getElementById("lowBeam").addEventListener('click', () => {
     selectedStatus[0] = lightSwitch.lowBeam;
-    document.getElementById("閉じる").classList.remove('selected');
-    document.getElementById('ポジションラーと').classList.remove('selected');
-    document.getElementById('ロービーム').classList.add('selected');
+    document.getElementById("closed").classList.remove('selected');
+    document.getElementById('positionLight').classList.remove('selected');
+    document.getElementById('lowBeam').classList.add('selected');
+    selectedStatus[0] = 'lowBeam';
 });
-document.getElementById("ハイビーム").addEventListener('click', () => {
+document.getElementById("highBeam").addEventListener('click', () => {
     selectedStatus[1] = headlightLever.highBeam;
-    document.getElementById("ハイビーム").classList.add('selected');
+    document.getElementById("highBeam").classList.add('selected');
     document.getElementById('reset').classList.remove('selected');
+    selectedStatus[1] = 'highBeam';
 });
 document.getElementById("reset").addEventListener('click', () => {
     selectedStatus[1] = headlightLever.lowBeam;
-    document.getElementById("ハイビーム").classList.remove('selected');
+    document.getElementById("highBeam").classList.remove('selected');
     document.getElementById('reset').classList.add('selected');
+    selectedStatus[1] = 'lowBeam';
 });
-document.getElementById("ハイビームとロービームの切り替え").addEventListener('click', () => {
+document.getElementById("highLowBeamToggle").addEventListener('click', () => {
     selectedStatus[1] = headlightLever.highLowBeamToggle;
+    selectedStatus[1] = 'highLowBeamToggle';
 });
-document.getElementById("ハザードランプ").addEventListener('click', () => {
+document.getElementById("hazardLight").addEventListener('click', () => {
     if (selectedStatus[2] == hazardLight.off) {
         selectedStatus[2] = hazardLight.on;
     } else if (selectedStatus[2] == hazardLight.on) {
@@ -79,7 +85,7 @@ document.getElementById("ハザードランプ").addEventListener('click', () =>
     } else {
         alert('Unrecognized state: ' + selectedStatus[2]);
     }
-    elem = document.getElementById('ハザードランプ');
+    elem = document.getElementById('hazardLight');
     if (elem.classList.contains('selected')) {
         elem.classList.remove('selected');
     } else {
@@ -98,9 +104,20 @@ document.getElementById('stop').addEventListener('click', () => {
 
 function playSound() {
     const randomIndex = Math.floor(Math.random() * sounds.length);
-    sound.src = `sounds/${sounds[randomIndex][0]}`;
+    sound_file_name = sounds[randomIndex][0];
+    sound.src = `sounds/${sound_file_name}`;
     sound.play();
     sound.onended = () => {
-        interval = setTimeout(playSound, 5000);
+        currentCorrectStatus = sounds.filter(s => s[0] == sound_file_name)[0][1];
+        interval = setTimeout(() => checkStatusAndPlayNextSound(currentCorrectStatus), 5000);
     };
+}
+
+function checkStatusAndPlayNextSound(correctStatus) {
+    if (selectedStatus[0] == correctStatus[0] && selectedStatus[1] == correctStatus[1] && selectedStatus[2] == correctStatus[2]) {
+        document.getElementById('output').innerHTML = "correct";
+        playSound();
+    } else {
+        document.getElementById('output').innerHTML = `incorrect, selectedStatus: ${selectedStatus}, correctStatus: ${correctStatus}`;
+    }
 }
