@@ -62,13 +62,9 @@ document.getElementById("lowBeam").addEventListener('click', () => {
 });
 document.getElementById("highBeam").addEventListener('click', () => {
     selectedStatus[1] = headlightLever.highBeam;
-    document.getElementById("highBeam").classList.add('selected');
-    document.getElementById('reset').classList.remove('selected');
 });
 document.getElementById("reset").addEventListener('click', () => {
     selectedStatus[1] = headlightLever.lowBeam;
-    document.getElementById("highBeam").classList.remove('selected');
-    document.getElementById('reset').classList.add('selected');
 });
 document.getElementById("highLowBeamToggle").addEventListener('click', () => {
     selectedStatus[1] = headlightLever.highLowBeamToggle;
