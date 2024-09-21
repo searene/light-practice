@@ -26,11 +26,4 @@ button {
     border: 1px solid #000;
     background-color: white;
     border-radius: 0;
-    cursor: pointer;
-    font-size: 24px;
-    width: 150px;
-}
-
-#hazardLight {
-    width: 200px;
 }
