@@ -18,9 +18,8 @@ const correctStatus = {
     highLowBeamToggle: [lightSwitch.lowBeam, headlightLever.highLowBeamToggle, hazardLight.off],
     hazardLight: [lightSwitch.positionLight, headlightLever.lowBeam, hazardLight.on],
 }
-const selectedStatus = [lightSwitch.closed, headlightLever.lowBeam, hazardLight.off]
+const selectedStatus = [lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.off]
 const sounds = [
-    ['请开启前照灯.mp3', correctStatus.lowBeam],
     ['夜间通过坡路.mp3', correctStatus.highLowBeamToggle],
     ['夜间通过急弯.mp3', correctStatus.highLowBeamToggle],
     ['夜间通过拱桥.mp3', correctStatus.highLowBeamToggle],
@@ -99,8 +98,10 @@ document.getElementById('stop').addEventListener('click', () => {
     sound.pause();
 });
 
+const randomNumberGenerator = new RandomNumberGenerator(sounds.length - 1);
+
 function playSound() {
-    const soundIndex = soundCount++ == 0 ? 0 : Math.floor(Math.random() * sounds.length);
+    const soundIndex = randomNumberGenerator.generate();
     sound_file_name = sounds[soundIndex][0];
     sound.src = `sounds/${sound_file_name}`;
     sound.play();
