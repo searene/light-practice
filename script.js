@@ -13,13 +13,14 @@ const hazardLight = {
     off: 'off',
 }
 const correctStatus = {
-    lowBeam: [lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.on],
-    highBeam: [lightSwitch.lowBeam, headlightLever.highBeam, hazardLight.on],
-    highLowBeamToggle: [lightSwitch.lowBeam, headlightLever.highLowBeamToggle, hazardLight.on],
-    hazardLight: [lightSwitch.positionLight, headlightLever.lowBeam, hazardLight.off],
+    lowBeam: [lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.off],
+    highBeam: [lightSwitch.lowBeam, headlightLever.highBeam, hazardLight.off],
+    highLowBeamToggle: [lightSwitch.lowBeam, headlightLever.highLowBeamToggle, hazardLight.off],
+    hazardLight: [lightSwitch.positionLight, headlightLever.lowBeam, hazardLight.on],
 }
-const selectedStatus = [lightSwitch.closed, headlightLever.lowBeam, hazardLight.on]
+const selectedStatus = [lightSwitch.closed, headlightLever.lowBeam, hazardLight.off]
 const sounds = [
+    ['请开启前照灯.mp3', correctStatus.lowBeam],
     ['夜间通过坡路.mp3', correctStatus.highLowBeamToggle],
     ['夜间通过急弯.mp3', correctStatus.highLowBeamToggle],
     ['夜间通过拱桥.mp3', correctStatus.highLowBeamToggle],
@@ -38,6 +39,7 @@ const sounds = [
 ];
 let sound = new Audio();
 let interval;
+let soundCount = 0;
 
 document.getElementById("closed").addEventListener('click', () => {
     selectedStatus[0] = lightSwitch.closed;
@@ -45,14 +47,12 @@ document.getElementById("closed").addEventListener('click', () => {
     document.getElementById("closed").classList.add('selected');
     document.getElementById('positionLight').classList.remove('selected');
     document.getElementById('lowBeam').classList.remove('selected');
-    selectedStatus[0] = 'closed';
 });
 document.getElementById("positionLight").addEventListener('click', () => {
     selectedStatus[0] = lightSwitch.positionLight;
     document.getElementById("closed").classList.remove('selected');
     document.getElementById('positionLight').classList.add('selected');
     document.getElementById('lowBeam').classList.remove('selected');
-    selectedStatus[0] = 'positionLight';
 });
 document.getElementById("lowBeam").addEventListener('click', () => {
     selectedStatus[0] = lightSwitch.lowBeam;
@@ -65,17 +65,14 @@ document.getElementById("highBeam").addEventListener('click', () => {
     selectedStatus[1] = headlightLever.highBeam;
     document.getElementById("highBeam").classList.add('selected');
     document.getElementById('reset').classList.remove('selected');
-    selectedStatus[1] = 'highBeam';
 });
 document.getElementById("reset").addEventListener('click', () => {
     selectedStatus[1] = headlightLever.lowBeam;
     document.getElementById("highBeam").classList.remove('selected');
     document.getElementById('reset').classList.add('selected');
-    selectedStatus[1] = 'lowBeam';
 });
 document.getElementById("highLowBeamToggle").addEventListener('click', () => {
     selectedStatus[1] = headlightLever.highLowBeamToggle;
-    selectedStatus[1] = 'highLowBeamToggle';
 });
 document.getElementById("hazardLight").addEventListener('click', () => {
     if (selectedStatus[2] == hazardLight.off) {
@@ -103,8 +100,8 @@ document.getElementById('stop').addEventListener('click', () => {
 });
 
 function playSound() {
-    const randomIndex = Math.floor(Math.random() * sounds.length);
-    sound_file_name = sounds[randomIndex][0];
+    const soundIndex = soundCount++ == 0 ? 0 : Math.floor(Math.random() * sounds.length);
+    sound_file_name = sounds[soundIndex][0];
     sound.src = `sounds/${sound_file_name}`;
     sound.play();
     sound.onended = () => {
@@ -119,5 +116,14 @@ function checkStatusAndPlayNextSound(correctStatus) {
         playSound();
     } else {
         document.getElementById('output').innerHTML = `incorrect, selectedStatus: ${selectedStatus}, correctStatus: ${correctStatus}`;
+    }
+    resetStatus();
+}
+
+function resetStatus() {
+    resetBtn = document.getElementById('reset');
+    highLowBeamToggleBtn = document.getElementById('highLowBeamToggle');
+    if (resetBtn.classList.contains('selected') && selectedStatus[1] == headlightLever.highLowBeamToggle) {
+        selectedStatus[1] = headlightLever.lowBeam;
     }
 }
