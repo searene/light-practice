@@ -98,7 +98,7 @@ document.getElementById('stop').addEventListener('click', () => {
     sound.pause();
 });
 
-const randomNumberGenerator = new RandomNumberGenerator(sounds.length - 1);
+const randomNumberGenerator = new RandomNumberGenerator(sounds.length);
 
 function playSound() {
     const soundIndex = randomNumberGenerator.generate();
