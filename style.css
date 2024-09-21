@@ -2,6 +2,11 @@
     display: flex;
     justify-content: space-between;
 }
+.control-container {
+    margin-top: 200px;
+    display: flex;
+    justify-content: space-between;
+}
 .column {
     margin: 10px;
 }
@@ -14,5 +19,17 @@
     margin: 0 2px; /* Reduced space between buttons */
 }
 .selected {
-    border: 5px solid #000;
+    border: 7px solid #000;
+}
+button {
+    padding: 5px 10px;
+    border: 1px solid #000;
+    background-color: white;
+    cursor: pointer;
+    font-size: 24px;
+    width: 150px;
+}
+
+#hazardLight {
+    width: 200px;
 }
