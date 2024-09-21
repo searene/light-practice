@@ -6,19 +6,18 @@ const lightSwitch = {
 const headlightLever = {
     highBeam: 'highBeam',
     lowBeam: 'lowBeam',
-    highLowBeamToggle: 'highLowBeamToggle',
 }
 const hazardLight = {
     on: 'on',
     off: 'off',
 }
 const correctStatus = {
-    lowBeam: [lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.off],
-    highBeam: [lightSwitch.lowBeam, headlightLever.highBeam, hazardLight.off],
-    highLowBeamToggle: [lightSwitch.lowBeam, headlightLever.highLowBeamToggle, hazardLight.off],
-    hazardLight: [lightSwitch.positionLight, headlightLever.lowBeam, hazardLight.on],
+    lowBeam: new Status(lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.off, false),
+    highBeam: new Status(lightSwitch.lowBeam, headlightLever.highBeam, hazardLight.off, false),
+    highLowBeamToggle: new Status(lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.off, true),
+    hazardLight: new Status(lightSwitch.positionLight, headlightLever.lowBeam, hazardLight.on, false),
 }
-const selectedStatus = [lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.off]
+const selectedStatus = new Status(lightSwitch.lowBeam, headlightLever.lowBeam, hazardLight.off, false)
 const sounds = [
     ['夜间通过坡路.mp3', correctStatus.highLowBeamToggle],
     ['夜间通过急弯.mp3', correctStatus.highLowBeamToggle],
@@ -41,42 +40,36 @@ let interval;
 let soundCount = 0;
 
 document.getElementById("closed").addEventListener('click', () => {
-    selectedStatus[0] = lightSwitch.closed;
+    selectedStatus.lightSwitchPos = lightSwitch.closed;
     // Change the button's style to mark it as selected
     document.getElementById("closed").classList.add('selected');
     document.getElementById('positionLight').classList.remove('selected');
     document.getElementById('lowBeam').classList.remove('selected');
 });
 document.getElementById("positionLight").addEventListener('click', () => {
-    selectedStatus[0] = lightSwitch.positionLight;
+    selectedStatus.lightSwitchPos = lightSwitch.positionLight;
     document.getElementById("closed").classList.remove('selected');
     document.getElementById('positionLight').classList.add('selected');
     document.getElementById('lowBeam').classList.remove('selected');
 });
 document.getElementById("lowBeam").addEventListener('click', () => {
-    selectedStatus[0] = lightSwitch.lowBeam;
+    selectedStatus.lightSwitchPos = lightSwitch.lowBeam;
     document.getElementById("closed").classList.remove('selected');
     document.getElementById('positionLight').classList.remove('selected');
     document.getElementById('lowBeam').classList.add('selected');
-    selectedStatus[0] = 'lowBeam';
 });
 document.getElementById("highBeam").addEventListener('click', () => {
-    selectedStatus[1] = headlightLever.highBeam;
+    selectedStatus.headlightLeverPos = headlightLever.highBeam;
 });
 document.getElementById("reset").addEventListener('click', () => {
-    selectedStatus[1] = headlightLever.lowBeam;
+    selectedStatus.headlightLeverPos = headlightLever.lowBeam;
 });
 document.getElementById("highLowBeamToggle").addEventListener('click', () => {
-    selectedStatus[1] = headlightLever.highLowBeamToggle;
+    selectedStatus.headlightLeverPos = headlightLever.lowBeam;
+    selectedStatus.isHighLowBeamToggled = true;
 });
 document.getElementById("hazardLight").addEventListener('click', () => {
-    if (selectedStatus[2] == hazardLight.off) {
-        selectedStatus[2] = hazardLight.on;
-    } else if (selectedStatus[2] == hazardLight.on) {
-        selectedStatus[2] = hazardLight.off;
-    } else {
-        alert('Unrecognized state: ' + selectedStatus[2]);
-    }
+    selectedStatus.toggleHazardLight();
     elem = document.getElementById('hazardLight');
     if (elem.classList.contains('selected')) {
         elem.classList.remove('selected');
@@ -108,19 +101,11 @@ function playSound() {
 }
 
 function checkStatusAndPlayNextSound(correctStatus) {
-    if (selectedStatus[0] == correctStatus[0] && selectedStatus[1] == correctStatus[1] && selectedStatus[2] == correctStatus[2]) {
+    if (selectedStatus.isEqual(correctStatus)) {
         document.getElementById('output').innerHTML = "correct";
         playSound();
     } else {
-        document.getElementById('output').innerHTML = `incorrect, selectedStatus: ${selectedStatus}, correctStatus: ${correctStatus}`;
+        document.getElementById('output').innerHTML = `incorrect<br/>selectedStatus: ${selectedStatus}<br/>correctStatus: ${correctStatus}`;
     }
-    resetStatus();
-}
-
-function resetStatus() {
-    resetBtn = document.getElementById('reset');
-    highLowBeamToggleBtn = document.getElementById('highLowBeamToggle');
-    if (resetBtn.classList.contains('selected') && selectedStatus[1] == headlightLever.highLowBeamToggle) {
-        selectedStatus[1] = headlightLever.lowBeam;
-    }
+    selectedStatus.isHighLowBeamToggled = false;
 }
